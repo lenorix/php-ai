@@ -18,7 +18,7 @@ abstract class CoreTool
 
     public function requiredParameters(): array
     {
-        return array_keys((array)$this->parameters());
+        return array_keys((array) $this->parameters());
     }
 
     abstract public function execute(...$parameters): mixed;
