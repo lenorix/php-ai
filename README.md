@@ -1,18 +1,15 @@
-# This is my package ai
+# Lenorix AI SDK for PHP
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/lenorix/ai.svg?style=flat-square)](https://packagist.org/packages/lenorix/ai)
 [![Tests](https://img.shields.io/github/actions/workflow/status/lenorix/ai/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/lenorix/ai/actions/workflows/run-tests.yml)
 [![Total Downloads](https://img.shields.io/packagist/dt/lenorix/ai.svg?style=flat-square)](https://packagist.org/packages/lenorix/ai)
 
-This is where your description should go. Try and limit it to a paragraph or two. Consider adding a small example.
+TypeScript has Vercel AI SDK, Python has LangChain, and PHP has Lenorix AI SDK.
 
 ## Support us
 
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/ai.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/ai)
-
-We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
-
-We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
+We are crafting open-source software for everyone, releasing it under the [Unlicense](LICENSE.md)
+ to let it in the public domain. If you find our work useful, consider supporting us.
 
 ## Installation
 
@@ -25,8 +22,24 @@ composer require lenorix/ai
 ## Usage
 
 ```php
-$skeleton = new Lenorix\Ai();
-echo $skeleton->echoPhrase('Hello, Lenorix!');
+use Lenorix\Ai\Provider\DeepSeek;
+use Lenorix\Ai\AiText;
+use Lenorix\Ai\Chat\CoreToolLambda;
+
+AiText::generate(
+    provider: new DeepSeek('deepseek-chat', 'sk-********************************'),
+    tools: [
+        // This is only an example, you can create your tool extending from CoreTool base class.
+        new CoreToolLambda(
+            fn ($city = 'madrid') => $city . ' is sunny',
+            'weather',
+            'get weather updated'
+        ),
+    ],
+    system: 'tell me the weather with updated information',
+    messages: [ ['role'=>'user', 'content'=>'tell me'] ],
+    maxSteps: 50
+);
 ```
 
 ## Testing
