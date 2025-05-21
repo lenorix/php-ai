@@ -11,5 +11,6 @@ interface ChatCompletion extends Provider
         array $tools = [],
         array $messages = [],
         ?string $system = null,
+        ?int $maxSteps = null
     ): CoreChatCompletionResponse;
 }

@@ -12,7 +12,8 @@ class AiText
         array $tools = [],
         array $messages = [],
         ?string $system = null,
+        ?int $maxSteps = null
     ): CoreChatCompletionResponse {
-        return $provider->generate($tools, $messages, $system);
+        return $provider->generate($tools, $messages, $system, $maxSteps);
     }
 }
