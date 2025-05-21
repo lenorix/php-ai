@@ -78,8 +78,7 @@ class OpenAi implements ChatCompletion
         $totalSteps = 0;
         $response = null;
         do {
-            if ($response && $response['choices'][0]['message']['tool_calls'] ?? null)
-            {
+            if ($response && $response['choices'][0]['message']['tool_calls'] ?? null) {
                 $toolCalls = $response['choices'][0]['message']['tool_calls'];
                 foreach ($toolCalls as $toolCall) {
                     $tool = $toolsByName[$toolCall['function']['name']];
@@ -117,7 +116,7 @@ class OpenAi implements ChatCompletion
         );
     }
 
-    protected function payload( array $messages, array $tools): array
+    protected function payload(array $messages, array $tools): array
     {
         return [
             'model' => $this->model,
@@ -131,7 +130,7 @@ class OpenAi implements ChatCompletion
     {
         return json_decode(
             $this->client->post('chat/completions', [
-                'json' => $payload
+                'json' => $payload,
             ])->getBody()->getContents(),
             associative: true,
             flags: JSON_THROW_ON_ERROR
