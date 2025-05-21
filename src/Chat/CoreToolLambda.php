@@ -10,7 +10,7 @@ class CoreToolLambda extends CoreTool
         public string $description,
         public array $parameters = [],
     ) {
-        if (!is_callable($this->lambda)) {
+        if (! is_callable($this->lambda)) {
             throw new \InvalidArgumentException('lambda must be callable');
         }
     }

@@ -2,6 +2,4 @@
 
 namespace Lenorix\Ai;
 
-interface Provider
-{
-}
+interface Provider {}
