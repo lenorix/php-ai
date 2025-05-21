@@ -45,8 +45,7 @@ class OpenAi implements ChatCompletion
         array $tools = [],
         array $messages = [],
         ?string $system = null
-    ): CoreChatCompletionResponse
-    {
+    ): CoreChatCompletionResponse {
         $messages = array_map(
             fn ($m) => $m instanceof CoreMessage ? $m->toArray() : $m,
             $messages
