@@ -5,7 +5,6 @@ namespace Lenorix\Ai\Chat;
 /**
  * Class CoreToolLambda
  *
- * @package Lenorix\Ai\Chat
  *
  * @property callable $lambda
  * @property string $name
