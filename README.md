@@ -11,6 +11,18 @@ TypeScript has Vercel AI SDK, Python has LangChain, and PHP has Lenorix AI SDK.
 We are crafting open-source software for everyone, releasing it under the [Unlicense](LICENSE.md)
  to let it in the public domain. If you find our work useful, consider supporting us.
 
+## Implementations
+
+| Service   | Chat | Streaming | Tools | Vision | Caching | PDF | Structured Output | MCP Client |
+|-----------|------|-----------|-------|--------|---------|-----|-------------------|------------|
+| OpenAI    | ✓    | ✕         | ✓     | ✕      | ✕       | ✕   | ✕                 | ✕          |
+| DeepSeek  | ✓    | ✕         | ✓     | ✕      | ✕       | ✕   | ✕                 | ✕          |
+| Anthropic | ✕    | ✕         | ✕     | ✕      | ✕       | ✕   | ✕                 | ✕          |
+| Groq      | ✕    | ✕         | ✕     | ✕      | ✕       | ✕   | ✕                 | ✕          |
+| Mistral   | ✕    | ✕         | ✕     | ✕      | ✕       | ✕   | ✕                 | ✕          |
+| xAI       | ✕    | ✕         | ✕     | ✕      | ✕       | ✕   | ✕                 | ✕          |
+| Google    | ✕    | ✕         | ✕     | ✕      | ✕       | ✕   | ✕                 | ✕          |
+
 ## Installation
 
 You can install the package via composer:
