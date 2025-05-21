@@ -41,7 +41,11 @@ class OpenAi implements ChatCompletion
         ]);
     }
 
-    public function generate(array $tools = [], array $messages = [], ?string $system = null): CoreChatCompletionResponse
+    public function generate(
+        array $tools = [],
+        array $messages = [],
+        ?string $system = null
+    ): CoreChatCompletionResponse
     {
         $messages = array_map(
             fn ($m) => $m instanceof CoreMessage ? $m->toArray() : $m,
@@ -66,7 +70,7 @@ class OpenAi implements ChatCompletion
             'model' => $this->model,
             'messages' => $messages,
             'tools' => $tools,
-            'tool_choice' => $tools ? 'auto' : 'none',
+            'tool_choice' => (count($tools) > 0) ? 'auto' : 'none',
         ];
 
         $response = json_decode(
