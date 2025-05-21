@@ -31,4 +31,18 @@ class CoreMessage
             toolCalls: $message['tool_calls'] ?? null,
         );
     }
+
+    public function toArray(): array
+    {
+        $message = [
+            'role' => $this->role->value,
+            'content' => $this->content,
+        ];
+
+        if ($this->toolCalls) {
+            $message['tool_calls'] = $this->toolCalls;
+        }
+
+        return $message;
+    }
 }
