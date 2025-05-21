@@ -84,6 +84,7 @@ class OpenAi implements ChatCompletion
         $completionTokens = 0;
         $cacheHitTokens = 0;
 
+        // TODO: Simplify this logic and the whole method.
         $totalSteps = 0;
         $response = null;
         do {
@@ -150,6 +151,9 @@ class OpenAi implements ChatCompletion
         ];
     }
 
+    /**
+     * @throws \JsonException|\GuzzleHttp\Exception\GuzzleException
+     */
     protected function sendChatCompletion(array $payload): array
     {
         return json_decode(

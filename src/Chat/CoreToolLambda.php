@@ -2,6 +2,16 @@
 
 namespace Lenorix\Ai\Chat;
 
+/**
+ * Class CoreToolLambda
+ *
+ * @package Lenorix\Ai\Chat
+ *
+ * @property callable $lambda
+ * @property string $name
+ * @property string $description
+ * @property array $parameters
+ */
 class CoreToolLambda extends CoreTool
 {
     public function __construct(

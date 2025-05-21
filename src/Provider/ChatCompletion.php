@@ -5,6 +5,10 @@ namespace Lenorix\Ai\Provider;
 use Lenorix\Ai\Chat\CoreChatCompletionResponse;
 use Lenorix\Ai\Provider;
 
+/**
+ * Interface for providers that support chat completion
+ * with tools.
+ */
 interface ChatCompletion extends Provider
 {
     public function generate(
