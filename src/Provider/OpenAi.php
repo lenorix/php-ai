@@ -110,6 +110,11 @@ class OpenAi implements ChatCompletion
             $totalSteps += 1;
         } while ($maxSteps && $totalSteps < $maxSteps);
 
+        $newMessages = array_map(
+            fn ($m) => is_array($m) ? CoreMessage::fromArray($m) : $m,
+            $newMessages
+        );
+
         return new CoreChatCompletionResponse(
             $response,
             messages: $newMessages,
