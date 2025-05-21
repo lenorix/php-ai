@@ -87,8 +87,8 @@ class OpenAi implements ChatCompletion
         $totalSteps = 0;
         $response = null;
         do {
-            if ($response && $response['choices'][0]['message']['tool_calls'] ?? null) {
-                $toolCalls = $response['choices'][0]['message']['tool_calls'];
+            if ($response && array_key_exists('tool_calls', $response['choices'][0]['message'])) {
+                $toolCalls = $response['choices'][0]['message']['tool_calls'] ?? [];
                 foreach ($toolCalls as $toolCall) {
                     $tool = $toolsByName[$toolCall['function']['name']];
                     $parameters = json_decode($toolCall['function']['arguments'], true);
