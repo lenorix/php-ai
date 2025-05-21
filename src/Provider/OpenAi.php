@@ -43,6 +43,7 @@ class OpenAi implements ChatCompletion
     public function generate(
         array $tools = [],
         array $messages = [],
+        ?string $prompt = null,
         ?string $system = null,
         ?int $maxSteps = null
     ): CoreChatCompletionResponse {
@@ -64,9 +65,16 @@ class OpenAi implements ChatCompletion
         if (count($messages) === 0 || $messages[0]['role'] !== 'system') {
             // NOTE: This is required to avoid API HTTP 400 error.
             array_unshift($messages, [
-                'role' => 'system',
+                'role' => CoreMessageRole::SYSTEM->value,
                 'content' => $system ?? '',
             ]);
+        }
+
+        if ($prompt) {
+            $messages[] = [
+                'role' => CoreMessageRole::USER->value,
+                'content' => $prompt,
+            ];
         }
 
         $newMessages = [];

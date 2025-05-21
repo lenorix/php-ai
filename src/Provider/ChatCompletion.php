@@ -10,6 +10,7 @@ interface ChatCompletion extends Provider
     public function generate(
         array $tools = [],
         array $messages = [],
+        ?string $prompt = null,
         ?string $system = null,
         ?int $maxSteps = null
     ): CoreChatCompletionResponse;
