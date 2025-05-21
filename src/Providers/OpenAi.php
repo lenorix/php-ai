@@ -4,6 +4,7 @@ namespace Lenorix\Ai\Providers;
 
 use GuzzleHttp\Client;
 use Lenorix\Ai\Chat\CoreChatResponse;
+use Lenorix\Ai\Chat\CoreMessage;
 use Lenorix\Ai\Chat\CoreTool;
 use Lenorix\Ai\Provider\ChatCompletion;
 
@@ -21,6 +22,8 @@ class OpenAi implements ChatCompletion
         $this->client = new Client([
             'base_uri' => $baseUrl,
             'headers' => [
+                'Authorization' => 'Bearer ' . $apiKey,
+                'Content-Type' => 'application/json',
             ],
             'timeout' => $timeout,
         ]);
@@ -32,6 +35,15 @@ class OpenAi implements ChatCompletion
             fn ($m) => $m instanceof CoreMessage ? $m->toArray() : $m,
             $messages
         );
+
+        if (count($messages) === 0 || $messages[0]['role'] !== 'system') {
+            // NOTE: This is required to avoid API HTTP 400 error.
+            array_unshift($messages, [
+                'role' => 'system',
+                'content' => $system ?? '',
+            ]);
+        }
+
         $tools = array_map(
             fn ($t) => $t instanceof CoreTool ? $t->toArray() : $t,
             $tools
