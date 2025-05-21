@@ -36,13 +36,13 @@ composer require lenorix/ai
 ```php
 use Lenorix\Ai\Provider\DeepSeek;
 use Lenorix\Ai\AiText;
-use Lenorix\Ai\Chat\CoreToolLambda;
+use Lenorix\Ai\Chat\ToolFromLambda;
 
 AiText::generate(
     provider: new DeepSeek('deepseek-chat', 'sk-********************************'),
     tools: [
         // This is only an example, you can create your tool extending from CoreTool base class.
-        new CoreToolLambda(
+        new ToolFromLambda(
             fn ($city = 'madrid') => $city . ' is sunny',
             'weather',
             'get weather updated'

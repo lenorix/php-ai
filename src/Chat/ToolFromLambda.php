@@ -13,7 +13,7 @@ namespace Lenorix\Ai\Chat;
  *
  * @throws \InvalidArgumentException
  */
-class CoreToolLambda extends CoreTool
+class ToolFromLambda extends CoreTool
 {
     public function __construct(
         public $lambda,
