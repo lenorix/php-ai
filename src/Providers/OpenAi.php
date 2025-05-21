@@ -22,7 +22,7 @@ class OpenAi implements ChatCompletion
         $this->client = new Client([
             'base_uri' => $baseUrl,
             'headers' => [
-                'Authorization' => 'Bearer ' . $apiKey,
+                'Authorization' => 'Bearer '.$apiKey,
                 'Content-Type' => 'application/json',
             ],
             'timeout' => $timeout,
