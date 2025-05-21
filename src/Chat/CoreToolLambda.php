@@ -8,7 +8,7 @@ class CoreToolLambda extends CoreTool
         public $lambda,
         public string $name,
         public string $description,
-        public ?array $parameters = null,
+        public array $parameters = [],
     ) {
         if (! is_callable($this->lambda)) {
             throw new \InvalidArgumentException('lambda must be callable');
@@ -25,9 +25,9 @@ class CoreToolLambda extends CoreTool
         return $this->description;
     }
 
-    public function parameters(): ?array
+    public function parameters(): object
     {
-        return $this->parameters;
+        return (object)$this->parameters;
     }
 
     public function execute(...$parameters): mixed

@@ -11,28 +11,22 @@ abstract class CoreTool
 
     abstract public function description(): string;
 
-    public function parameters(): ?array
+    public function parameters(): object
     {
-        return null;
+        return (object)[];
     }
 
     abstract public function execute(...$parameters): mixed;
 
     public function toArray(): array
     {
-        $function = [
-            'name' => $this->name(),
-            'description' => $this->description(),
-        ];
-
-        $parameters = $this->parameters();
-        if (! is_null($parameters)) {
-            $function['parameters'] = $parameters;
-        }
-
         return [
             'type' => 'function',
-            'function' => $function,
+            'function' => [
+                'name' => $this->name(),
+                'description' => $this->description(),
+                'parameters' => $this->parameters(),
+            ],
         ];
     }
 }
