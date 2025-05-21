@@ -76,7 +76,7 @@ class OpenAi implements ChatCompletion
         $cacheHitTokens = 0;
 
         $totalSteps = 0;
-        $response = null
+        $response = null;
         do {
             if ($response && $response['choices'][0]['message']['tool_calls'] ?? null)
             {
