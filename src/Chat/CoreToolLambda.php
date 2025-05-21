@@ -27,7 +27,7 @@ class CoreToolLambda extends CoreTool
 
     public function parameters(): object
     {
-        return (object)$this->parameters;
+        return (object) $this->parameters;
     }
 
     public function execute(...$parameters): mixed

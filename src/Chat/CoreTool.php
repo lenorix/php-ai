@@ -13,7 +13,7 @@ abstract class CoreTool
 
     public function parameters(): object
     {
-        return (object)[];
+        return (object) [];
     }
 
     abstract public function execute(...$parameters): mixed;
