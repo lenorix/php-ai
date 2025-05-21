@@ -86,7 +86,7 @@ class OpenAi implements ChatCompletion
                     $result = $tool->execute(...$parameters);
                     $message = [
                         'role' => CoreMessageRole::TOOL,
-                        'tool_call_id' => $t['id'],
+                        'tool_call_id' => $toolCall['id'],
                         'content' => $result,
                     ];
                     $newMessages[] = $message;
