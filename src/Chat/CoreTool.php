@@ -16,6 +16,11 @@ abstract class CoreTool
         return (object) [];
     }
 
+    public function requiredParameters(): array
+    {
+        return array_keys((array)$this->parameters());
+    }
+
     abstract public function execute(...$parameters): mixed;
 
     public function toArray(): array
@@ -25,7 +30,11 @@ abstract class CoreTool
             'function' => [
                 'name' => $this->name(),
                 'description' => $this->description(),
-                'parameters' => $this->parameters(),
+                'parameters' => [
+                    'type' => 'object',
+                    'properties' => $this->parameters(),
+                    'required' => $this->requiredParameters(),
+                ],
             ],
         ];
     }
