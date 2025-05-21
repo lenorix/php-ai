@@ -26,7 +26,9 @@ class CoreMessage
     public static function fromArray(array $message): self
     {
         return new self(
-            role: CoreMessageRole::from($message['role']),
+            role: $message['role'] instanceof CoreMessageRole
+                ? $message['role']
+                : CoreMessageRole::from($message['role']),
             content: $message['content'] ?? null,
             toolCalls: $message['tool_calls'] ?? null,
         );
