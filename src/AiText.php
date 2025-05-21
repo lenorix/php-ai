@@ -13,8 +13,16 @@ class AiText
         array $messages = [],
         ?string $prompt = null,
         ?string $system = null,
+        ?float $temperature = null,
         ?int $maxSteps = null
     ): CoreChatCompletionResponse {
-        return $provider->generate($tools, $messages, $system, $maxSteps);
+        return $provider->generate(
+            $tools,
+            $messages,
+            $prompt,
+            $system,
+            $temperature,
+            $maxSteps
+        );
     }
 }

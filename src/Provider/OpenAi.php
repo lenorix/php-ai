@@ -45,6 +45,7 @@ class OpenAi implements ChatCompletion
         array $messages = [],
         ?string $prompt = null,
         ?string $system = null,
+        ?float $temperature = null,
         ?int $maxSteps = null
     ): CoreChatCompletionResponse {
         $messages = array_map(
@@ -104,7 +105,13 @@ class OpenAi implements ChatCompletion
                 break;
             }
 
-            $response = $this->sendChatCompletion($this->payload($messages, $tools));
+            $payload = $this->payload($messages, $tools);
+
+            if ($temperature) {
+                $payload['temperature'] = $temperature;
+            }
+
+            $response = $this->sendChatCompletion($payload);
 
             $message = $response['choices'][0]['message'];
             $newMessages[] = CoreMessage::fromArray($message);

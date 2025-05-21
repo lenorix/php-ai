@@ -12,6 +12,7 @@ interface ChatCompletion extends Provider
         array $messages = [],
         ?string $prompt = null,
         ?string $system = null,
+        ?float $temperature = null,
         ?int $maxSteps = null
     ): CoreChatCompletionResponse;
 }
