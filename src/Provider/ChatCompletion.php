@@ -1,0 +1,15 @@
+<?php
+
+namespace Lenorix\Ai\Provider;
+
+use Lenorix\Ai\Chat\CoreChatResponse;
+use Lenorix\Ai\Provider;
+
+interface ChatCompletion extends Provider
+{
+    public function generate(
+        array $tools = [],
+        array $messages = [],
+        ?string $system = null,
+    ): CoreChatResponse;
+}
