@@ -5,7 +5,7 @@ namespace Lenorix\Ai\Chat;
 class CoreToolLambda extends CoreTool
 {
     public function __construct(
-        public callable $lambda,
+        public $lambda,
         public string $name,
         public string $description,
         public array $parameters = [],
