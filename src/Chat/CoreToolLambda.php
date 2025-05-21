@@ -36,6 +36,7 @@ class CoreToolLambda extends CoreTool
         if ($this->requiredParameters === null) {
             return array_keys((array) $this->parameters());
         }
+
         return $this->requiredParameters;
     }
 
