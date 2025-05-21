@@ -11,6 +11,7 @@ use Lenorix\Ai\Provider\ChatCompletion;
 class OpenAi implements ChatCompletion
 {
     private Client $client;
+
     private array $newMessages = [];
 
     public function __construct(
@@ -22,7 +23,7 @@ class OpenAi implements ChatCompletion
         public int $timeout = 30,
     ) {
         $headers = [
-            'Authorization' => 'Bearer ' . $apiKey,
+            'Authorization' => 'Bearer '.$apiKey,
             'Content-Type' => 'application/json',
             'Accept' => 'application/json',
         ];
@@ -85,7 +86,7 @@ class OpenAi implements ChatCompletion
             $response,
             messages: $this->newMessages,
             totalTokens: $response['usage']['total_tokens'],
-            promptTokens:  $response['usage']['prompt_tokens'],
+            promptTokens: $response['usage']['prompt_tokens'],
             completionTokens: $response['usage']['completion_tokens'],
             cacheHitTokens: $response['usage']['prompt_tokens_details']['cached_tokens'],
         );

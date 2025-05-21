@@ -2,7 +2,6 @@
 
 namespace Lenorix\Ai\Providers;
 
-use Lenorix\Ai\Chat\CoreChatCompletionResponse;
 use Lenorix\Ai\Provider\ChatCompletion;
 
 class DeepSeek extends OpenAi implements ChatCompletion
