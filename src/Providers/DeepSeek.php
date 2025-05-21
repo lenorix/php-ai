@@ -4,7 +4,7 @@ namespace Lenorix\Ai\Providers;
 
 use Lenorix\Ai\Provider\ChatCompletion;
 
-class DeepSeek extends  OpenAi implements ChatCompletion
+class DeepSeek extends OpenAi implements ChatCompletion
 {
     public function __construct(
         public string $model,

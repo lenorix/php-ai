@@ -26,14 +26,14 @@ class OpenAi implements ChatCompletion
         ]);
     }
 
-    public function generate(array $tools = [], array $messages = [], ?string $system = null,): CoreChatResponse
+    public function generate(array $tools = [], array $messages = [], ?string $system = null): CoreChatResponse
     {
         $messages = array_map(
-            fn($m) => $m instanceof CoreMessage ? $m->toArray() : $m,
+            fn ($m) => $m instanceof CoreMessage ? $m->toArray() : $m,
             $messages
         );
         $tools = array_map(
-            fn($t) => $t instanceof CoreTool ? $t->toArray() : $t,
+            fn ($t) => $t instanceof CoreTool ? $t->toArray() : $t,
             $tools
         );
 

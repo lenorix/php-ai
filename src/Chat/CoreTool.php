@@ -10,6 +10,8 @@ abstract class CoreTool
     }
 
     abstract public function description(): string;
+
     abstract public function parameters(): array;
+
     abstract public function execute(...$parameters): mixed;
 }

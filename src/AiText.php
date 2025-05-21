@@ -3,7 +3,6 @@
 namespace Lenorix\Ai;
 
 use Lenorix\Ai\Chat\CoreChatResponse;
-use Lenorix\Ai\Chat\CoreMessage;
 use Lenorix\Ai\Provider\ChatCompletion;
 
 class AiText
