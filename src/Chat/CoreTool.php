@@ -21,9 +21,12 @@ abstract class CoreTool
     public function toArray(): array
     {
         return [
-            'name' => $this->name(),
-            'description' => $this->description(),
-            'parameters' => $this->parameters(),
+            'type' => 'function',
+            'function' => [
+                'name' => $this->name(),
+                'description' => $this->description(),
+                'parameters' => $this->parameters(),
+            ],
         ];
     }
 }
