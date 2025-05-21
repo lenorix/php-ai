@@ -11,7 +11,10 @@ abstract class CoreTool
 
     abstract public function description(): string;
 
-    abstract public function parameters(): array;
+    public function parameters(): array
+    {
+        return [];
+    }
 
     abstract public function execute(...$parameters): mixed;
 }

@@ -1,8 +1,6 @@
 <?php
 
-namespace Lenorix\Ai\Providers;
-
-use Lenorix\Ai\Provider\ChatCompletion;
+namespace Lenorix\Ai\Provider;
 
 class DeepSeek extends OpenAi implements ChatCompletion
 {

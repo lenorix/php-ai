@@ -1,12 +1,11 @@
 <?php
 
-namespace Lenorix\Ai\Providers;
+namespace Lenorix\Ai\Provider;
 
 use GuzzleHttp\Client;
 use Lenorix\Ai\Chat\CoreChatCompletionResponse;
 use Lenorix\Ai\Chat\CoreMessage;
 use Lenorix\Ai\Chat\CoreTool;
-use Lenorix\Ai\Provider\ChatCompletion;
 
 class OpenAi implements ChatCompletion
 {
