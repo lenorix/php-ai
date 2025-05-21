@@ -92,6 +92,8 @@ class OpenAi implements ChatCompletion
                     $newMessages[] = $message;
                     $messages[] = $message;
                 }
+            } elseif ($totalTokens > 0) {
+                break;
             }
 
             $response = $this->sendChatCompletion($this->payload($messages, $tools));
