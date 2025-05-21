@@ -3,6 +3,7 @@
 namespace Lenorix\Ai\Provider;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 use Lenorix\Ai\Chat\CoreChatCompletionResponse;
 use Lenorix\Ai\Chat\CoreMessage;
 use Lenorix\Ai\Chat\CoreMessageRole;
@@ -40,6 +41,18 @@ class OpenAi implements ChatCompletion
         ]);
     }
 
+    /**
+     * @param CoreTool[] $tools
+     * @param CoreMessage[] $messages Previous messages to be sent for previous context.
+     * @param string|null $prompt Add user prompt as new message (included in messages in `CoreChatCompleteResponse`).
+     * @param string|null $system If there is not a system prompt as first message sent, this will be used without add it to new messages.
+     * @param float|null $temperature Temperature to use for the model (0.0 to 2.0, default is 1.0).
+     * @param int|null $maxSteps Maximum number of steps to execute tool calls (disabled by default).
+     *
+     * @return CoreChatCompletionResponse
+     * @throws GuzzleException
+     * @throws \JsonException
+     */
     public function generate(
         array $tools = [],
         array $messages = [],
@@ -71,14 +84,16 @@ class OpenAi implements ChatCompletion
             ]);
         }
 
+        $newMessages = [];
         if ($prompt) {
-            $messages[] = [
+            $message = [
                 'role' => CoreMessageRole::USER->value,
                 'content' => $prompt,
             ];
+            $newMessages[] = $message;
+            $messages[] = $message;
         }
 
-        $newMessages = [];
         $totalTokens = 0;
         $promptTokens = 0;
         $completionTokens = 0;
@@ -157,7 +172,7 @@ class OpenAi implements ChatCompletion
     }
 
     /**
-     * @throws \JsonException|\GuzzleHttp\Exception\GuzzleException
+     * @throws \JsonException|GuzzleException
      */
     protected function sendChatCompletion(array $payload): array
     {

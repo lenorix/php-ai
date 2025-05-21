@@ -48,8 +48,12 @@ AiText::generate(
             'get weather updated'
         ),
     ],
-    system: 'tell me the weather with updated information',
-    messages: [ ['role'=>'user', 'content'=>'tell me'] ],
+    system: 'help users to know the weather with updated information',
+    prompt: 'tell me the weather',
+    messages: [
+        ['role' => 'user', 'content' => 'hello'],
+        ['role' => 'assistant', 'content' => 'hi!']
+    ],
     maxSteps: 50
 );
 ```
