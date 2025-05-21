@@ -3,13 +3,15 @@
 namespace Lenorix\Ai\Chat;
 
 /**
- * Class CoreToolLambda
- *
+ * Use `CoreTool` to create a tool, but this can
+ * conveniently convert a lambda function to a tool.
  *
  * @property callable $lambda
  * @property string $name
  * @property string $description
  * @property array $parameters
+ *
+ * @throws \InvalidArgumentException
  */
 class CoreToolLambda extends CoreTool
 {
@@ -42,11 +44,7 @@ class CoreToolLambda extends CoreTool
 
     public function requiredParameters(): array
     {
-        if ($this->requiredParameters === null) {
-            return array_keys((array) $this->parameters());
-        }
-
-        return $this->requiredParameters;
+        return $this->requiredParameters ?: array_keys((array) $this->parameters());
     }
 
     public function execute(...$parameters): mixed

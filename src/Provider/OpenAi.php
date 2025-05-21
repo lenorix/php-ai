@@ -91,6 +91,7 @@ class OpenAi implements ChatCompletion
             if ($response && array_key_exists('tool_calls', $response['choices'][0]['message'])) {
                 $toolCalls = $response['choices'][0]['message']['tool_calls'] ?? [];
                 foreach ($toolCalls as $toolCall) {
+                    // TODO: Refactor this to CoreTool class.
                     $tool = $toolsByName[$toolCall['function']['name']];
                     $parameters = json_decode($toolCall['function']['arguments'], true);
                     $result = $tool->execute(...$parameters);
@@ -99,6 +100,10 @@ class OpenAi implements ChatCompletion
                         'tool_call_id' => $toolCall['id'],
                         'content' => $result,
                     ];
+                    // Until here. Need to think a name for the method.
+                    // Also, this requires improve a Language Model Specification
+                    // like https://ai-sdk.dev/docs/foundations/providers-and-models
+
                     $newMessages[] = $message;
                     $messages[] = $message;
                 }
