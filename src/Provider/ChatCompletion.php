@@ -2,7 +2,7 @@
 
 namespace Lenorix\Ai\Provider;
 
-use Lenorix\Ai\Chat\CoreChatResponse;
+use Lenorix\Ai\Chat\CoreChatCompletionResponse;
 use Lenorix\Ai\Provider;
 
 interface ChatCompletion extends Provider
@@ -11,5 +11,5 @@ interface ChatCompletion extends Provider
         array $tools = [],
         array $messages = [],
         ?string $system = null,
-    ): CoreChatResponse;
+    ): CoreChatCompletionResponse;
 }

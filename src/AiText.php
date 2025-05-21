@@ -2,7 +2,7 @@
 
 namespace Lenorix\Ai;
 
-use Lenorix\Ai\Chat\CoreChatResponse;
+use Lenorix\Ai\Chat\CoreChatCompletionResponse;
 use Lenorix\Ai\Provider\ChatCompletion;
 
 class AiText
@@ -12,7 +12,7 @@ class AiText
         array $tools = [],
         array $messages = [],
         ?string $system = null,
-    ): CoreChatResponse {
+    ): CoreChatCompletionResponse {
         return $provider->generate($tools, $messages, $system);
     }
 }

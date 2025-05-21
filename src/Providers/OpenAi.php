@@ -3,7 +3,7 @@
 namespace Lenorix\Ai\Providers;
 
 use GuzzleHttp\Client;
-use Lenorix\Ai\Chat\CoreChatResponse;
+use Lenorix\Ai\Chat\CoreChatCompletionResponse;
 use Lenorix\Ai\Chat\CoreMessage;
 use Lenorix\Ai\Chat\CoreTool;
 use Lenorix\Ai\Provider\ChatCompletion;
@@ -11,30 +11,43 @@ use Lenorix\Ai\Provider\ChatCompletion;
 class OpenAi implements ChatCompletion
 {
     private Client $client;
+    private array $newMessages = [];
 
     public function __construct(
         public string $model,
-        public string $apiKey,
-        public string $organization,
+        protected string $apiKey,
+        protected ?string $organizationId = null,
+        protected ?string $projectId = null,
         public string $baseUrl = 'https://api.openai.com/',
         public int $timeout = 30,
     ) {
+        $headers = [
+            'Authorization' => 'Bearer ' . $apiKey,
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+        ];
+
+        if (! is_null($this->organizationId)) {
+            $headers['OpenAI-Organization'] = $this->organizationId;
+        }
+        if (! is_null($this->projectId)) {
+            $headers['OpenAI-Project'] = $this->projectId;
+        }
+
         $this->client = new Client([
             'base_uri' => $baseUrl,
-            'headers' => [
-                'Authorization' => 'Bearer '.$apiKey,
-                'Content-Type' => 'application/json',
-            ],
+            'headers' => $headers,
             'timeout' => $timeout,
         ]);
     }
 
-    public function generate(array $tools = [], array $messages = [], ?string $system = null): CoreChatResponse
+    public function generate(array $tools = [], array $messages = [], ?string $system = null): CoreChatCompletionResponse
     {
         $messages = array_map(
             fn ($m) => $m instanceof CoreMessage ? $m->toArray() : $m,
             $messages
         );
+        $this->newMessages = [];
 
         if (count($messages) === 0 || $messages[0]['role'] !== 'system') {
             // NOTE: This is required to avoid API HTTP 400 error.
@@ -56,10 +69,25 @@ class OpenAi implements ChatCompletion
             'tool_choice' => $tools ? 'auto' : 'none',
         ];
 
-        $response = $this->client->post('chat/completions', ['json' => $payload]);
+        $response = json_decode(
+            $this->client->post('chat/completions', ['json' => $payload])->getBody()->getContents(),
+            associative: true,
+            flags: JSON_THROW_ON_ERROR
+        );
+        $this->newMessages[] = CoreMessage::fromArray($response['choices'][0]['message']);
 
-        return new CoreChatResponse(
-            json_decode($response->getBody()->getContents(), true, flags: JSON_THROW_ON_ERROR)
+        return $this->chatCompletionResponse($response);
+    }
+
+    protected function chatCompletionResponse(array $response): CoreChatCompletionResponse
+    {
+        return new CoreChatCompletionResponse(
+            $response,
+            messages: $this->newMessages,
+            totalTokens: $response['usage']['total_tokens'],
+            promptTokens:  $response['usage']['prompt_tokens'],
+            completionTokens: $response['usage']['completion_tokens'],
+            cacheHitTokens: $response['usage']['prompt_tokens_details']['cached_tokens'],
         );
     }
 }
