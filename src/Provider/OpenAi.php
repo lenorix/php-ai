@@ -96,7 +96,9 @@ class OpenAi implements ChatCompletion
 
             $response = $this->sendChatCompletion($this->payload($messages, $tools));
 
-            $newMessages[] = CoreMessage::fromArray($response['choices'][0]['message']);
+            $message = CoreMessage::fromArray($response['choices'][0]['message']);
+            $newMessages[] = $message;
+            $messages[] = $message;
 
             $totalTokens += $response['usage']['total_tokens'] ?? 0;
             $promptTokens += $response['usage']['prompt_tokens'] ?? 0;
