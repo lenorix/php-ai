@@ -9,11 +9,13 @@ class CoreMessage
     public mixed $content;
 
     public ?array $toolCalls = null;
+    public ?string $toolCallId = null;
 
     public function __construct(
         CoreMessageRole $role,
         mixed $content = null,
         ?array $toolCalls = null,
+        ?string $toolCallId = null,
     ) {
         $this->role = $role;
         $this->content = $content;
