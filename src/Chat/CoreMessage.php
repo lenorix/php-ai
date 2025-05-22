@@ -9,6 +9,7 @@ class CoreMessage
     public mixed $content;
 
     public ?array $toolCalls = null;
+
     public ?string $toolCallId = null;
 
     public function __construct(
