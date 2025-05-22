@@ -128,6 +128,9 @@ class OpenAi implements ChatCompletion
             } elseif ($totalSteps > 0) {
                 break;
             }
+            if ($maxSteps !== null && $totalSteps >= $maxSteps) {
+                break;
+            }
 
             $payload = $this->payload($messages, $tools, $toolChoice);
 
