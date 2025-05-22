@@ -3,7 +3,9 @@
     "description": "PHP SDK for AI APIs",
     "keywords": [
         "lenorix",
-        "ai"
+        "ai",
+        "deepseek",
+        "mcp"
     ],
     "homepage": "https://github.com/lenorix/php-ai",
     "license": "Unlicense",
