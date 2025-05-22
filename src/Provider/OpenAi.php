@@ -167,6 +167,7 @@ class OpenAi implements ChatCompletion
     protected function payload(array $messages, array $tools, ?string $toolChoice = null): array
     {
         $toolChoiceDefault = (count($tools) > 0) ? 'auto' : 'none';
+
         return [
             'model' => $this->model,
             'messages' => $messages,
