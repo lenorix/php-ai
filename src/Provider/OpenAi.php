@@ -116,7 +116,7 @@ class OpenAi implements ChatCompletion
                     $message = [
                         'role' => CoreMessageRole::TOOL->value,
                         'tool_call_id' => $toolCall['id'],
-                        'content' => $result,
+                        'content' => json_encode($result, JSON_THROW_ON_ERROR),
                     ];
                     // Until here. Need to think a name for the method.
                     // Also, this requires improve a Language Model Specification
@@ -125,7 +125,7 @@ class OpenAi implements ChatCompletion
                     $newMessages[] = $message;
                     $messages[] = $message;
                 }
-            } elseif ($totalTokens > 0) {
+            } elseif ($totalSteps > 0) {
                 break;
             }
 
