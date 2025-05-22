@@ -24,6 +24,10 @@ class CoreMessage
         if ($toolCalls) {
             $this->toolCalls = $toolCalls;
         }
+
+        if ($toolCallId) {
+            $this->toolCallId = $toolCallId;
+        }
     }
 
     public static function fromArray(array $message): self
@@ -34,6 +38,7 @@ class CoreMessage
                 : CoreMessageRole::from($message['role']),
             content: $message['content'] ?? null,
             toolCalls: $message['tool_calls'] ?? null,
+            toolCallId: $message['tool_call_id'] ?? null,
         );
     }
 
@@ -46,6 +51,10 @@ class CoreMessage
 
         if ($this->toolCalls) {
             $message['tool_calls'] = $this->toolCalls;
+        }
+
+        if ($this->toolCallId) {
+            $message['tool_call_id'] = $this->toolCallId;
         }
 
         return $message;
