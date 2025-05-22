@@ -42,14 +42,13 @@ class OpenAi implements ChatCompletion
     }
 
     /**
-     * @param CoreTool[] $tools
-     * @param CoreMessage[] $messages Previous messages to be sent for previous context.
-     * @param string|null $prompt Add user prompt as new message (included in messages in `CoreChatCompleteResponse`).
-     * @param string|null $system If there is not a system prompt as first message sent, this will be used without add it to new messages.
-     * @param float|null $temperature Temperature to use for the model (0.0 to 2.0, default is 1.0).
-     * @param int|null $maxSteps Maximum number of steps to execute tool calls (disabled by default).
+     * @param  CoreTool[]  $tools
+     * @param  CoreMessage[]  $messages  Previous messages to be sent for previous context.
+     * @param  string|null  $prompt  Add user prompt as new message (included in messages in `CoreChatCompleteResponse`).
+     * @param  string|null  $system  If there is not a system prompt as first message sent, this will be used without add it to new messages.
+     * @param  float|null  $temperature  Temperature to use for the model (0.0 to 2.0, default is 1.0).
+     * @param  int|null  $maxSteps  Maximum number of steps to execute tool calls (disabled by default).
      *
-     * @return CoreChatCompletionResponse
      * @throws GuzzleException
      * @throws \JsonException
      */
