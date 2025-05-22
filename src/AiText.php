@@ -14,7 +14,8 @@ class AiText
         ?string $prompt = null,
         ?string $system = null,
         ?float $temperature = null,
-        ?int $maxSteps = null
+        ?int $maxSteps = null,
+        ?string $toolChoice = null
     ): CoreChatCompletionResponse {
         return $provider->generate(
             $tools,
@@ -22,7 +23,8 @@ class AiText
             $prompt,
             $system,
             $temperature,
-            $maxSteps
+            $maxSteps,
+            $toolChoice
         );
     }
 }

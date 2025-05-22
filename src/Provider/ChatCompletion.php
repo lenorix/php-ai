@@ -17,6 +17,7 @@ interface ChatCompletion extends Provider
         ?string $prompt = null,
         ?string $system = null,
         ?float $temperature = null,
-        ?int $maxSteps = null
+        ?int $maxSteps = null,
+        ?string $toolChoice = null
     ): CoreChatCompletionResponse;
 }

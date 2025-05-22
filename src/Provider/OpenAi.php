@@ -58,7 +58,8 @@ class OpenAi implements ChatCompletion
         ?string $prompt = null,
         ?string $system = null,
         ?float $temperature = null,
-        ?int $maxSteps = null
+        ?int $maxSteps = null,
+        ?string $toolChoice = null
     ): CoreChatCompletionResponse {
         $messages = array_map(
             fn ($m) => $m instanceof CoreMessage ? $m->toArray() : $m,
@@ -128,7 +129,7 @@ class OpenAi implements ChatCompletion
                 break;
             }
 
-            $payload = $this->payload($messages, $tools);
+            $payload = $this->payload($messages, $tools, $toolChoice);
 
             if ($temperature) {
                 $payload['temperature'] = $temperature;
@@ -163,13 +164,14 @@ class OpenAi implements ChatCompletion
         );
     }
 
-    protected function payload(array $messages, array $tools): array
+    protected function payload(array $messages, array $tools, ?string $toolChoice = null): array
     {
+        $toolChoiceDefault = (count($tools) > 0) ? 'auto' : 'none';
         return [
             'model' => $this->model,
             'messages' => $messages,
             'tools' => $tools,
-            'tool_choice' => (count($tools) > 0) ? 'auto' : 'none',
+            'tool_choice' => $toolChoice ?: $toolChoiceDefault,
         ];
     }
 
