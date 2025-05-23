@@ -112,12 +112,20 @@ class OpenAi implements ChatCompletion
                 $toolCalls = $response['choices'][0]['message']['tool_calls'] ?? [];
                 foreach ($toolCalls as $toolCall) {
                     // TODO: Refactor this to CoreTool class.
-                    $tool = $toolsByName[$toolCall['function']['name']];
-                    $parameters = json_decode($toolCall['function']['arguments'],
-                        associative: true,
-                        flags: JSON_THROW_ON_ERROR
-                    );
-                    $result = $tool->execute(...$parameters);
+                    try {
+                        $tool = $toolsByName[$toolCall['function']['name']];
+                        $parameters = json_decode($toolCall['function']['arguments'],
+                            associative: true,
+                            flags: JSON_THROW_ON_ERROR
+                        );
+                        $result = $tool->execute(...$parameters);
+                    } catch ($e) {
+                        $result = [
+                            'error' => [
+                                'message' => $e->getMessage(),
+                            ],
+                        ];
+                    }
                     $message = [
                         'role' => CoreMessageRole::TOOL->value,
                         'tool_call_id' => $toolCall['id'],
