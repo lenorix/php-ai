@@ -102,8 +102,13 @@ class OpenAi implements ChatCompletion
         // TODO: Simplify this logic and the whole method.
         $totalSteps = 0;
         $response = null;
+        $originalToolChoice = $toolChoice;
         do {
+            $toolChoice = $originalToolChoice;
             if ($response && array_key_exists('tool_calls', $response['choices'][0]['message'])) {
+                if ($toolChoice === 'required') {
+                    $toolChoice = 'auto';
+                }
                 $toolCalls = $response['choices'][0]['message']['tool_calls'] ?? [];
                 foreach ($toolCalls as $toolCall) {
                     // TODO: Refactor this to CoreTool class.
