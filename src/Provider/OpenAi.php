@@ -119,7 +119,7 @@ class OpenAi implements ChatCompletion
                             flags: JSON_THROW_ON_ERROR
                         );
                         $result = $tool->execute(...$parameters);
-                    } catch ($e) {
+                    } catch (\Exception $e) {
                         $result = [
                             'error' => [
                                 'message' => $e->getMessage(),
