@@ -44,7 +44,7 @@ abstract class CoreTool implements \JsonSerializable
     protected function parametersSchema(): \stdClass
     {
         $properties = array_map(function ($value) {
-            return is_array($value) ? (object)$value : $value;
+            return is_array($value) ? (object) $value : $value;
         }, $this->parameters());
 
         $schema = new \stdClass;
