@@ -19,14 +19,14 @@ abstract class CoreTool implements \JsonSerializable
 
     abstract public function description(): string;
 
-    public function parameters(): object
+    public function parameters(): array
     {
-        return (object) [];
+        return [];
     }
 
     public function requiredParameters(): array
     {
-        return array_keys((array) $this->parameters());
+        return array_keys($this->parameters());
     }
 
     abstract public function run(...$arguments): mixed;
@@ -43,10 +43,14 @@ abstract class CoreTool implements \JsonSerializable
 
     protected function parametersSchema(): \stdClass
     {
+        $properties = array_map(function ($value) {
+            return is_array($value) ? (object)$value : $value;
+        }, $this->parameters());
+
         $schema = new \stdClass;
 
         $schema->type = 'object';
-        $schema->properties = $this->parameters();
+        $schema->properties = (object) $properties;
         $schema->required = $this->requiredParameters();
 
         return $schema;
