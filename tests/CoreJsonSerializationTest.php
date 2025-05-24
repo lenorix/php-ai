@@ -117,3 +117,48 @@ it('check JSON serialization of CoreTool', function () {
             '"type":"function"'
         );
 });
+
+it('check JSON serialization of CoreTool with parameters', function () {
+    $tool = new class extends CoreTool
+    {
+        public function description(): string
+        {
+            return 'Test tool';
+        }
+
+        public function run(...$arguments): mixed
+        {
+            return null;
+        }
+
+        public function parameters(): array
+        {
+            return [
+                'param1' => [
+                    'type' => 'string',
+                    'description' => 'First parameter',
+                ],
+                'param2' => [
+                    'type' => 'integer',
+                    'description' => 'Second parameter',
+                ],
+            ];
+        }
+
+        public function requiredParameters(): array
+        {
+            return ['param1'];
+        }
+    };
+
+    expect(json_encode($tool))
+        ->toContain(
+            '"name":'.json_encode($tool->name()),
+            '"description":"Test tool"',
+            '"param1":{"type":"string","description":"First parameter"}',
+            '"param2":{"type":"integer","description":"Second parameter"}',
+            '"properties":{',
+            '"required":["param1"]',
+            '"type":"function"'
+        );
+});
