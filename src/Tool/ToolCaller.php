@@ -7,7 +7,6 @@ use Lenorix\Ai\Chat\CoreMessageRole;
 use Lenorix\Ai\Chat\CoreTool;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
-use Swaggest\JsonSchema\Schema;
 
 
 class ToolCaller
@@ -50,6 +49,10 @@ class ToolCaller
             // without it any try to complete the chat will be rejected (at least by DeepSeek).
             $callId = $this->getIdForToolCall($toolCall);
 
+            $this->logger->debug('Init tool call', [
+                'toolCall' => $toolCall,
+                'callId' => $callId,
+            ]);
             // The rest of errors could be handled returning the error to the LLM.
             $toolMessage = new CoreMessage(
                 role: CoreMessageRole::TOOL,
@@ -57,6 +60,11 @@ class ToolCaller
                 toolCallId: $callId,
             );
             $results[] = $toolMessage;
+            $this->logger->debug('Tool call completed', [
+                'toolCall' => $toolCall,
+                'callId' => $callId,
+                'message' => $toolMessage,
+            ]);
         }
 
         return $results;
@@ -102,7 +110,7 @@ class ToolCaller
         }
 
         try {
-            $schema = Schema::import($tool->parametersSchema());
+            $schema = $tool->parametersSchemaContract();
             // NOTE: No, no move the (object) to $arguments = (object)... because then
             // are not associative array to use ... operator for tool->run(...$arguments)
             // but here is required to validate the arguments JSON schema correctly.

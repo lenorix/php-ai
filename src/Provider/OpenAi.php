@@ -51,7 +51,7 @@ class OpenAi implements ChatCompletion
      * @param  int|null  $maxSteps  Maximum number of steps to execute tool calls (disabled by default).
      *
      * @throws GuzzleException
-     * @throws \JsonException
+     * @throws \JsonException | \Exception
      */
     public function generate(
         array $tools = [],
@@ -63,35 +63,21 @@ class OpenAi implements ChatCompletion
         ?string $toolChoice = null
     ): CoreChatCompletionResponse {
         $toolCaller = new ToolCaller($tools);
-        $messages = array_map(
-            fn ($m) => $m instanceof CoreMessage ? $m->toArray() : $m,
-            $messages
-        );
 
-        $toolsByName = [];
-        foreach ($tools as $tool) {
-            $toolsByName[$tool->name()] = $tool;
-        }
-
-        $tools = array_map(
-            fn ($t) => $t instanceof CoreTool ? $t->toArray() : $t,
-            $tools
-        );
-
-        if (count($messages) === 0 || $messages[0]['role'] !== 'system') {
-            // NOTE: This is required to avoid API HTTP 400 error.
-            array_unshift($messages, [
-                'role' => CoreMessageRole::SYSTEM->value,
-                'content' => $system ?? '',
-            ]);
+        if (count($messages) === 0 || $messages[0]->role !== CoreMessageRole::SYSTEM) {
+            // NOTE: This is required to avoid API HTTP 400 error (at least for DeepSeek).
+            array_unshift($messages, new CoreMessage(
+                role: CoreMessageRole::SYSTEM,
+                content: $system ?? '',
+            ));
         }
 
         $newMessages = [];
         if ($prompt) {
-            $message = [
-                'role' => CoreMessageRole::USER->value,
-                'content' => $prompt,
-            ];
+            $message = new CoreMessage(
+                role: CoreMessageRole::USER,
+                content: $prompt,
+            );
             $newMessages[] = $message;
             $messages[] = $message;
         }
@@ -144,8 +130,8 @@ class OpenAi implements ChatCompletion
 
             $response = $this->sendChatCompletion($payload);
 
-            $message = $response['choices'][0]['message'];
-            $newMessages[] = CoreMessage::fromArray($message);
+            $message = CoreMessage::fromArray($response['choices'][0]['message']);
+            $newMessages[] = $message;
             $messages[] = $message;
 
             $totalTokens += $response['usage']['total_tokens'] ?? 0;
@@ -155,11 +141,6 @@ class OpenAi implements ChatCompletion
 
             $totalSteps += 1;
         } while ($maxSteps && $totalSteps < $maxSteps);
-
-        $newMessages = array_map(
-            fn ($m) => is_array($m) ? CoreMessage::fromArray($m) : $m,
-            $newMessages
-        );
 
         return new CoreChatCompletionResponse(
             $response,

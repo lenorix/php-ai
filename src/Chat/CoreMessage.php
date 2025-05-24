@@ -2,7 +2,7 @@
 
 namespace Lenorix\Ai\Chat;
 
-class CoreMessage
+class CoreMessage implements \JsonSerializable
 {
     public CoreMessageRole $role;
 
@@ -58,5 +58,10 @@ class CoreMessage
         }
 
         return $message;
+    }
+
+    public function jsonSerialize(): mixed
+    {
+        return (object) $this->toArray();
     }
 }
