@@ -173,6 +173,9 @@ class ToolCaller
             $this->logger->error('Tool call must have "function.arguments" key value.', ['toolCall' => $toolCall]);
             throw new \Exception('A tool calls item must contain a "function.arguments" key value.');
         }
+        if (is_string($arguments)) {
+            $arguments = json_decode($arguments, true);
+        }
 
         return $arguments;
     }
