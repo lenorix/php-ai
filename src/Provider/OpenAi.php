@@ -8,6 +8,7 @@ use Lenorix\Ai\Chat\CoreChatCompletionResponse;
 use Lenorix\Ai\Chat\CoreMessage;
 use Lenorix\Ai\Chat\CoreMessageRole;
 use Lenorix\Ai\Chat\CoreTool;
+use Lenorix\Ai\Tool\ToolCaller;
 
 class OpenAi implements ChatCompletion
 {
@@ -61,6 +62,7 @@ class OpenAi implements ChatCompletion
         ?int $maxSteps = null,
         ?string $toolChoice = null
     ): CoreChatCompletionResponse {
+        $toolCaller = new ToolCaller($tools);
         $messages = array_map(
             fn ($m) => $m instanceof CoreMessage ? $m->toArray() : $m,
             $messages
@@ -110,33 +112,22 @@ class OpenAi implements ChatCompletion
                     $toolChoice = 'auto';
                 }
                 $toolCalls = $response['choices'][0]['message']['tool_calls'] ?? [];
-                foreach ($toolCalls as $toolCall) {
-                    // TODO: Refactor this to CoreTool class.
-                    try {
-                        $tool = $toolsByName[$toolCall['function']['name']];
-                        $parameters = json_decode($toolCall['function']['arguments'],
-                            associative: true,
-                            flags: JSON_THROW_ON_ERROR
-                        );
-                        $result = $tool->execute(...$parameters);
-                    } catch (\Exception $e) {
-                        $result = [
-                            'error' => [
-                                'message' => $e->getMessage(),
-                            ],
-                        ];
-                    }
-                    $message = [
-                        'role' => CoreMessageRole::TOOL->value,
-                        'tool_call_id' => $toolCall['id'],
-                        'content' => json_encode($result, JSON_THROW_ON_ERROR),
-                    ];
-                    // Until here. Need to think a name for the method.
-                    // Also, this requires improve a Language Model Specification
-                    // like https://ai-sdk.dev/docs/foundations/providers-and-models
 
-                    $newMessages[] = $message;
-                    $messages[] = $message;
+                $toolMessages = [];
+                try {
+                    $toolMessages = $toolCaller->callTools($toolCalls);
+                } catch (\Exception $e) {
+                    // Something is wrong in assistant tool calls,
+                    // so we will remove the last message to give the
+                    // assistant another change or at least avoid
+                    // the messages chain be broken.
+                    array_pop($newMessages);
+                    array_pop($messages);
+                }
+
+                foreach ($toolMessages as $toolMessage) {
+                    $newMessages[] = $toolMessage;
+                    $messages[] = $toolMessage;
                 }
             } elseif ($totalSteps > 0) {
                 break;

@@ -21,7 +21,26 @@ abstract class CoreTool
         return array_keys((array) $this->parameters());
     }
 
-    abstract public function execute(...$parameters): mixed;
+    abstract public function run(...$arguments): mixed;
+
+    public function returnCaughtException(\Exception $exception): mixed
+    {
+        return [
+            'error' => [
+                'message' => $exception->getMessage(),
+                'code' => $exception->getCode(),
+            ],
+        ];
+    }
+
+    public function parametersSchema(): \stdClass
+    {
+        $schema = new \stdClass();
+        $schema->type = 'object';
+        $schema->properties = $this->parameters();
+        $schema->required = $this->requiredParameters();
+        return $schema;
+    }
 
     public function toArray(): array
     {
@@ -30,11 +49,7 @@ abstract class CoreTool
             'function' => [
                 'name' => $this->name(),
                 'description' => $this->description(),
-                'parameters' => [
-                    'type' => 'object',
-                    'properties' => $this->parameters(),
-                    'required' => $this->requiredParameters(),
-                ],
+                'parameters' => $this->parametersSchema(),
             ],
         ];
     }

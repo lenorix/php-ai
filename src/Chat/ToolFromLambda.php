@@ -47,8 +47,8 @@ class ToolFromLambda extends CoreTool
         return $this->requiredParameters ?: array_keys((array) $this->parameters());
     }
 
-    public function execute(...$parameters): mixed
+    public function run(...$arguments): mixed
     {
-        return ($this->lambda)(...$parameters);
+        return ($this->lambda)(...$arguments);
     }
 }

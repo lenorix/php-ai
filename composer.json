@@ -18,7 +18,9 @@
     ],
     "require": {
         "php": "^8.2|^8.3|^8.4",
-        "guzzlehttp/guzzle": "^7.9"
+        "guzzlehttp/guzzle": "^7.9",
+        "psr/log": "^3.0",
+        "swaggest/json-schema": "^0.12.43"
     },
     "require-dev": {
         "pestphp/pest": "^3.0",
