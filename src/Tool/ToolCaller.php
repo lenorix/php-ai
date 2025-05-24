@@ -8,11 +8,11 @@ use Lenorix\Ai\Chat\CoreTool;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
-
 class ToolCaller
 {
     /** @var CoreTool[] */
     protected readonly array $toolsByName;
+
     protected readonly LoggerInterface $logger;
 
     public function __construct(
@@ -20,7 +20,7 @@ class ToolCaller
         array $tools,
         ?LoggerInterface $logger = null
     ) {
-        $this->logger = $logger ?? new NullLogger();
+        $this->logger = $logger ?? new NullLogger;
 
         $toolsByName = [];
         foreach ($tools as $tool) {
@@ -36,8 +36,9 @@ class ToolCaller
     /**
      * Executes the provided tool calls.
      *
-     * @param array $toolCalls An array of tool calls, each containing the tool name and parameters.
+     * @param  array  $toolCalls  An array of tool calls, each containing the tool name and parameters.
      * @return CoreMessage[] An array of results from executing the tool calls, with tool role each message.
+     *
      * @throws \Exception If a tool call does not have at least a valid ID.
      */
     public function callTools(array $toolCalls): array
@@ -91,6 +92,7 @@ class ToolCaller
                 'toolCall' => $toolCall,
                 'error' => $e,
             ]);
+
             return [
                 'error' => [
                     'message' => $e->getMessage(),
@@ -106,6 +108,7 @@ class ToolCaller
                 'toolCall' => $toolCall,
                 'error' => $e,
             ]);
+
             return $tool->returnCaughtException($e);
         }
 
@@ -114,12 +117,13 @@ class ToolCaller
             // NOTE: No, no move the (object) to $arguments = (object)... because then
             // are not associative array to use ... operator for tool->run(...$arguments)
             // but here is required to validate the arguments JSON schema correctly.
-            $schema->in((object)$arguments);
+            $schema->in((object) $arguments);
         } catch (\Exception $e) {
             $this->logger->error('Invalid arguments for tool call.', [
                 'toolCall' => $toolCall,
                 'error' => $e,
             ]);
+
             return $tool->returnCaughtException($e);
         }
 
@@ -130,6 +134,7 @@ class ToolCaller
                 'toolCall' => $toolCall,
                 'error' => $e,
             ]);
+
             return $tool->returnCaughtException($e);
         }
     }
@@ -137,8 +142,9 @@ class ToolCaller
     /**
      * Finds the tool for the given tool call.
      *
-     * @param array $toolCall The tool call to find the tool for.
+     * @param  array  $toolCall  The tool call to find the tool for.
      * @return CoreTool The found tool.
+     *
      * @throws \Exception If the tool call is invalid or the tool is not found.
      */
     protected function findToolForToolCall(array $toolCall): CoreTool
@@ -163,7 +169,7 @@ class ToolCaller
         $function = $toolCall['function'] ?? [];
         $arguments = $function['arguments'] ?? null;
 
-        if(is_null($arguments)) {
+        if (is_null($arguments)) {
             $this->logger->error('Tool call must have "function.arguments" key value.', ['toolCall' => $toolCall]);
             throw new \Exception('A tool calls item must contain a "function.arguments" key value.');
         }

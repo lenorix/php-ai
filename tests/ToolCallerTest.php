@@ -30,12 +30,12 @@ it('handle tool missed', function () {
         ->toHaveProperty('content')
         ->and($messages[0]->content)
         ->toBeString()
-        ->toContain('"error":{"')
-    ;
+        ->toContain('"error":{"');
 });
 
 it('handle tool call', function () {
-    $tool = new class() extends \Lenorix\Ai\Chat\CoreTool {
+    $tool = new class extends \Lenorix\Ai\Chat\CoreTool
+    {
         public function description(): string
         {
             return 'Test tool';
@@ -75,6 +75,5 @@ it('handle tool call', function () {
         ->toHaveProperty('content')
         ->and($messages[0]->content)
         ->toBeString()
-        ->toContain('"result":"success"')
-    ;
+        ->toContain('"result":"success"');
 });

@@ -95,7 +95,8 @@ it('check JSON serialization of CoreMessage with tool call ID', function () {
 });
 
 it('check JSON serialization of CoreTool', function () {
-    $tool = new class() extends CoreTool {
+    $tool = new class extends CoreTool
+    {
         public function description(): string
         {
             return 'Test tool';
@@ -109,7 +110,7 @@ it('check JSON serialization of CoreTool', function () {
 
     expect(json_encode($tool))
         ->toContain(
-            '"name":' . json_encode($tool->name()),
+            '"name":'.json_encode($tool->name()),
             '"description":"Test tool"',
             '"properties":{}',
             '"required":[]',

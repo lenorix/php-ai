@@ -13,6 +13,7 @@ abstract class CoreTool implements \JsonSerializable
         $name = str_replace('\\', '/', $name);
         $name = str_replace(':', '?l=', $name);
         $name = str_replace('$', '&c=', $name);
+
         return $name;
     }
 
@@ -42,7 +43,7 @@ abstract class CoreTool implements \JsonSerializable
 
     protected function parametersSchema(): \stdClass
     {
-        $schema = new \stdClass();
+        $schema = new \stdClass;
 
         $schema->type = 'object';
         $schema->properties = $this->parameters();
@@ -54,7 +55,6 @@ abstract class CoreTool implements \JsonSerializable
     /**
      * Returns the JSON schema for the parameters validation.
      *
-     * @return SchemaContract
      * @throws \Swaggest\JsonSchema\Exception If the schema does not conform to the JSON Schema specification.
      */
     public function parametersSchemaContract(): SchemaContract
@@ -69,11 +69,13 @@ abstract class CoreTool implements \JsonSerializable
      * Converts the tool to an array representation.
      *
      * @return array The array representation of the tool.
+     *
      * @throws \Swaggest\JsonSchema\Exception If the schema does not conform to the JSON Schema specification.
      */
     public function toArray(): array
     {
         Schema::schema()->in($this->parametersSchema());
+
         return [
             'type' => 'function',
             'function' => [
@@ -88,6 +90,7 @@ abstract class CoreTool implements \JsonSerializable
      * Converts the tool to a JSON-serializable object.
      *
      * @return mixed The JSON-serializable representation of the tool.
+     *
      * @throws \Swaggest\JsonSchema\Exception If the schema does not conform to the JSON Schema specification.
      */
     public function jsonSerialize(): mixed
