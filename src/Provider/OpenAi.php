@@ -9,10 +9,14 @@ use Lenorix\Ai\Chat\CoreMessage;
 use Lenorix\Ai\Chat\CoreMessageRole;
 use Lenorix\Ai\Chat\CoreTool;
 use Lenorix\Ai\Tool\ToolCaller;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 
 class OpenAi implements ChatCompletion
 {
     private Client $client;
+
+    protected readonly LoggerInterface $logger;
 
     public function __construct(
         public string $model,
@@ -21,7 +25,10 @@ class OpenAi implements ChatCompletion
         protected ?string $projectId = null,
         public string $baseUrl = 'https://api.openai.com/',
         public int $timeout = 30,
+        ?LoggerInterface $logger = null
     ) {
+        $this->logger = $logger ?? new NullLogger;
+
         $headers = [
             'Authorization' => 'Bearer '.$apiKey,
             'Content-Type' => 'application/json',
