@@ -5,12 +5,9 @@ namespace Lenorix\Ai\Chat;
 class CoreChatCompletionResponse
 {
     /**
-     * @param mixed $response Latest response from the provider API.
-     * @param CoreMessage[] $messages New messages created with chat completion.
-     * @param int $totalTokens Tokens usage from response statistics.
-     * @param int $promptTokens
-     * @param int $completionTokens
-     * @param int $cacheHitTokens
+     * @param  mixed  $response  Latest response from the provider API.
+     * @param  CoreMessage[]  $messages  New messages created with chat completion.
+     * @param  int  $totalTokens  Tokens usage from response statistics.
      */
     public function __construct(
         public mixed $response,
